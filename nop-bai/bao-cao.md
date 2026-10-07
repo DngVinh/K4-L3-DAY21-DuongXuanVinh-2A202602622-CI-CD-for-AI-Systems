@@ -32,16 +32,16 @@ Lớp thu nhập cao chiếm 24,8%. Luôn đoán thu nhập thấp đạt accura
 |---|---|---|
 | Thư viện không chạy với môi trường ban đầu. | Máy có Python 3.14, lab dùng thư viện cũ. | Tạo venv Python 3.11 trong workspace. |
 | MLflow lỗi import dependency. | Setuptools và SQLAlchemy mới bỏ API cũ. | Pin setuptools 70.3.0 và SQLAlchemy 2.0.30. |
-| Chưa có bằng chứng cloud. | Chưa có bucket/VM. | Đã chuẩn bị workflow và DEPLOYMENT.md. |
+| SSH bị lỗi quyền truy cập trên Windows. | CLI và khóa thuộc hai tài khoản khác nhau. | Đăng nhập GitHub riêng cho sandbox; dùng WIF và SSH qua IAP. |
 
 ## 4. So Sánh Bước 2 và Bước 3 (bắt buộc, 2 - 3 câu)
 
 | | f1_score | accuracy |
 |---|---|---|
-| Bước 2 tương đương cục bộ, 22.361 mẫu | 0.7281 | 0.8820 |
+| Bước 2 Actions/VM, 22.361 mẫu | 0.7281 | 0.8820 |
 | Bước 3 mô phỏng cục bộ, 44.722 mẫu | 0.7444 | 0.8860 |
 
-**Nhận xét:** F1 tăng 0,0163, accuracy tăng 0,0040; cùng phân phối nên cải thiện nhỏ. Gate không hồi quy đã qua. Số liệu local cần xác nhận bằng Actions/VM trước khi nộp.
+**Nhận xét:** Dự kiến F1 tăng 0,0163, accuracy tăng 0,0040 từ so sánh local; cùng phân phối nên cải thiện nhỏ. Bước 2 đã có bốn jobs xanh, API VM hoạt động. Bước 3 chưa chạy Actions nên chưa khẳng định hoàn tất.
 
 ## 5. Phần Bonus Đã Thực Hiện (nếu có)
 

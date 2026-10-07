@@ -39,7 +39,8 @@ bucket `lday21-income-mlops-dngvinh`, VM `income-api`, zone `us-central1-a`.
 tài nguyên: bucket riêng tư/versioning, VM e2-micro Debian 12 tại `35.208.68.97`,
 mạng riêng `income-lab`; SSH chỉ qua IAP, cổng API 8080 công khai. Bootstrap đã
 hoàn tất; Python 3.11.2 và quyền restart service đã kiểm chứng qua SSH.
-Chưa xác nhận phục vụ model hoặc Actions xanh.
+Run Actions `37573632735` đã có bốn jobs xanh; API VM healthz/score/version
+đã kiểm chứng, run ID `6c4bab25c3594612849243a6e97b47d8`, F1 0,7281/accuracy 0,8820.
 
 Google Cloud CLI dùng bản archive 588.0.0 chính thức trong
 `.tools/google-cloud-sdk`; cấu hình riêng ở `.tools/gcloud-config` được loại khỏi
