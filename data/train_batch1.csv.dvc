@@ -1,6 +1,7 @@
 meta:
   training_rows: 44722
   batches: [train_batch1, train_batch2]
+  training_sha256: d5c5f896924e3927dafb97e967ca60d94c07bbf276111d8e3ead41cb58914da9
 outs:
 - md5: a8dce66c4576ca2cb7da42a584fe31b3
   size: 1170799
