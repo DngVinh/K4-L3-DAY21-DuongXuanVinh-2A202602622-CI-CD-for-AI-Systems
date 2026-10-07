@@ -6,7 +6,7 @@
 | MSSV | 2A202602622 |
 | Lớp / Khóa | K4 |
 | Repo GitHub | [DngVinh/CI-CD-for-AI-Systems](https://github.com/DngVinh/K4-L3-DAY21-DuongXuanVinh-2A202602622-CI-CD-for-AI-Systems) |
-| Ngày nộp | Chưa nộp; chuẩn bị ngày 07/10/2026 |
+| Ngày nộp | 07/10/2026 |
 
 ## 1. Siêu tham số và lý do
 
@@ -47,7 +47,7 @@ Runs: [Bước 2](https://github.com/DngVinh/K4-L3-DAY21-DuongXuanVinh-2A2026026
 
 ## 5. Bonus
 
-- [ ] Bonus 1: Workflow hỗ trợ DagsHub; chưa có token và run từ xa.
+- [x] Bonus 1: DagsHub MLflow tracking; 6 runs ghi từ xa qua workflow Actions.
 - [x] Bonus 2: Quét 17 ngưỡng; F1 0,7511 tại 0,4 so với 0,7281 tại 0,5; chưa phải test độc lập.
 - [x] Bonus 3: Tạo confusion matrix và precision/recall hai lớp; workflow lưu artifact.
 - [x] Bonus 4: Log so sánh F1 cũ/mới; GCS giữ history/versions; tests chặn hồi quy.
