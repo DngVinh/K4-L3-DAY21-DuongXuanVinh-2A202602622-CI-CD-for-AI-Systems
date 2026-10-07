@@ -1,0 +1,113 @@
+name: Quality Gate Negative Proof
+run-name: Negative proof - weak model must block Release
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  unit-test:
+    name: Unit Test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: pip
+      - run: pip install -r requirements.txt
+      - name: Verify the production dependency chain and tests
+        run: |
+          python - <<'PY'
+          import yaml
+          jobs = yaml.safe_load(open('.github/workflows/cicd.yml'))['jobs']
+          assert jobs['train']['needs'] == 'unit-test'
+          assert jobs['quality-gate']['needs'] == 'train'
+          assert jobs['release']['needs'] == 'quality-gate'
+          PY
+          python -m pytest tests/ -v
+
+  train:
+    name: Train
+    needs: unit-test
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
+    env:
+      ARTIFACT_BUCKET: ${{ secrets.ARTIFACT_BUCKET }}
+      MLFLOW_TRACKING_URI: sqlite:///proof-mlflow.db
+    outputs:
+      f1: ${{ steps.report.outputs.f1 }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: pip
+      - run: pip install -r requirements.txt
+      - uses: google-github-actions/auth@v2
+        with:
+          workload_identity_provider: ${{ secrets.GCP_WORKLOAD_IDENTITY_PROVIDER }}
+          service_account: ${{ secrets.GCP_SERVICE_ACCOUNT }}
+      - name: Retrieve preserved original batch without modifying current data
+        run: |
+          python - <<'PY'
+          import subprocess, yaml
+          from pathlib import Path
+          original = yaml.safe_load(subprocess.check_output(
+              ['git', 'show', '1c60e43de6194d3a23439c06abe01f14653786b7:data/train_batch1.csv.dvc']))
+          original['outs'][0]['path'] = 'negative_train.csv'
+          with Path('data/negative_train.csv.dvc').open('x') as stream:
+              yaml.safe_dump(original, stream)
+          with Path('proof-weak-params.yaml').open('x') as stream:
+              yaml.safe_dump({'n_estimators': 50, 'learning_rate': 0.05, 'max_depth': 2}, stream)
+          PY
+          dvc remote add --local -d labstore "gs://$ARTIFACT_BUCKET/dvc"
+          dvc pull data/negative_train.csv.dvc data/holdout.csv.dvc
+      - name: Train a real weak model (no cloud model publication)
+        run: python -m src.train --params proof-weak-params.yaml --data data/negative_train.csv --run-name quality-gate-negative-proof
+      - name: Report real F1
+        id: report
+        run: |
+          python - <<'PY'
+          import json, os
+          r = json.load(open('outputs/report.json'))
+          print('Actual weak-model F1:', r['f1_score'])
+          with open(os.environ['GITHUB_OUTPUT'], 'a') as stream:
+              stream.write(f"f1={r['f1_score']}\n")
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: negative-proof-report
+          path: |
+            outputs/report.json
+            outputs/detail.txt
+
+  quality-gate:
+    name: Quality Gate
+    needs: train
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Run the same production gate (expected failure)
+        env:
+          CANDIDATE_F1: ${{ needs.train.outputs.f1 }}
+        run: python -m src.quality_gate --f1 "$CANDIDATE_F1"
+
+  release:
+    name: Release
+    needs: quality-gate
+    runs-on: ubuntu-latest
+    # Test sentinel only, not the production deploy job. No cloud auth or SSH key.
+    # GitHub must skip this job because the real quality gate fails above.
+    steps:
+      - name: Fail safely if a failing gate ever reaches Release
+        run: |
+          echo 'ERROR: negative proof unexpectedly reached Release; no deployment attempted.'
+          exit 1

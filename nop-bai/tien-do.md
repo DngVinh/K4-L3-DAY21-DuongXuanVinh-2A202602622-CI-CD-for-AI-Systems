@@ -5,7 +5,7 @@ Cập nhật ngày 07/10/2026. Chỉ đánh dấu phần đã thực thi hoặc 
 `lday21-income-mlops-dngvinh` đã bật versioning; `dvc push` đã đẩy ba file.
 VM `income-api` (e2-micro, us-central1-a, Debian 12/Python 3.11) đang chạy tại
 `35.208.68.97`; bootstrap đã hoàn tất, SSH qua IAP và quyền restart đã kiểm chứng.
-Bước 2 đã có bốn jobs xanh và API VM hoạt động; chưa có DagsHub hoặc ảnh nộp bài.
+Bước 2 và Bước 3 có bốn jobs xanh, API VM hoạt động; chưa có DagsHub hoặc ảnh nộp bài.
 
 | Hạng mục | Bằng chứng hiện có | Còn cần làm |
 |---|---|---|
@@ -15,11 +15,11 @@ Bước 2 đã có bốn jobs xanh và API VM hoạt động; chưa có DagsHub 
 | CI/CD bốn jobs | Run 37573632735 có bốn jobs xanh; 34 tests qua | Chụp ảnh 02 |
 | Quality gate | CLI và tests chặn F1 < 0,65, NaN và F1 hồi quy | Chụp run Actions Quality Gate failed / Release skipped |
 | Serving | API IP VM healthz/score/version qua; run ID khớp report | Ảnh 04 |
-| Tự động hóa dữ liệu | Đã append 44.722 mẫu, giữ snapshot, DVC push, hai commit chỉ sửa con trỏ | Push chưa tạo Actions run; cần kiểm tra UI, rồi ảnh 03 |
+| Tự động hóa dữ liệu | Run push 37574988490 từ commit chỉ sửa con trỏ; bốn jobs xanh | Ảnh 03 |
 | Bonus 1 | Workflow nhận URI/username/token MLflow từ secrets | Liên kết DagsHub, chạy và chụp ảnh remote |
 | Bonus 2 | 17 ngưỡng, best threshold và F1 mặc định được log riêng | Giữ metrics triển khai/ngưỡng phục vụ nhất quán |
-| Bonus 3 | Confusion matrix và precision/recall hai lớp trong detail.txt | Xác nhận artifact trên Actions |
-| Bonus 4 | Test chặn hồi quy; publisher tạo immutable history trước cập nhật | Kiểm chứng trên bucket/VM thực |
+| Bonus 3 | Detail trong artifact Actions/GCS; bản sao tại detail-cloud-buoc-3.txt | Có thể thêm ảnh/log bonus |
+| Bonus 4 | Log so sánh F1 và history/versions GCS đã kiểm chứng; tests chặn hồi quy | Có thể thêm ảnh/log bonus |
 | Bonus 5 | Tỷ lệ dương 24,77%; tests với 43,75% kích hoạt drift | Lưu log cảnh báo ở run thực nếu muốn thêm bằng chứng |
 
 ## Số liệu có thể tái tạo
@@ -31,7 +31,7 @@ Bước 2 đã có bốn jobs xanh và API VM hoạt động; chưa có DagsHub 
 - Chi tiết metrics, hashes và run IDs: [ket-qua-local.json](ket-qua-local.json).
 - Sau Bước 2, batch 2 đã được append vào dataset chính; snapshot batch 1 giữ
   nguyên MD5 `6097c9bf1219a011f64a7a594a7b617d`. Dataset 44.722 mẫu đã lên GCS.
-  Số liệu F1 0,7444 vẫn chỉ là so sánh local, chưa có run Bước 3 trên Actions.
+  F1 0,7444 và accuracy 0,8860 đã xác nhận trên Actions và model phục vụ ở VM.
 
 ## Bằng chứng còn thiếu
 
@@ -46,15 +46,16 @@ public host key đã thiết lập; host key lấy từ serial console GCP và �
 Người học đã xác nhận rõ danh sách thay đổi Bước 3 bằng câu xác nhận phá hủy.
 Đã cấp role thay thế riêng, chỉ đúng hai object current và tự hết hiệu lực lúc
 14:00 ngày 07/10/2026 (Asia/Bangkok). Không xóa phiên bản/history; model current
-vẫn là Bước 2 vì chưa có pipeline Bước 3. Nếu cần cấp lại sau hết hạn phải xin
+đã là Bước 3, cả hai generations cũ và bản sao history vẫn còn. Nếu cần cấp lại phải xin
 duyệt mới, không coi xác nhận cũ là quyền triển khai lâu dài.
 
 Commit `d35461e` đổi hash/size dữ liệu; `14f46d5` thêm metadata 44.722 mẫu.
-Cả hai chỉ sửa `data/train_batch1.csv.dvc`. Repo là fork; API báo Actions enabled
-và workflow active. Đã xác minh token push là OAuth của DngVinh, kiểm tra path
-filter theo tài liệu GitHub và bật workflow lại; vẫn không có run/check-suite
-cho push. Chưa kết luận nguyên nhân; cần xem UI/cảnh báo từ người học. Không
-dispatch thủ công Bước 3 để giả làm bằng chứng tự động hóa. Chi tiết:
+Cả hai chỉ sửa `data/train_batch1.csv.dvc`. UI người học cung cấp đã xác nhận
+GitHub chặn workflows của fork dù API báo enabled/active; người học bấm bật.
+Commit `67447c0` bổ sung SHA256 dữ liệu (vẫn chỉ sửa con trỏ) đã tự kích hoạt
+run `37574988490`, event `push`, bốn jobs success. Không dispatch thủ công Bước 3.
+Model/report checksum và run ID VM khớp; log so sánh F1 0,728111 -> 0,744395.
+Chi tiết:
 [du-lieu-buoc-3.json](du-lieu-buoc-3.json).
 
 Chưa có năm ảnh 01–05. Công cụ UI phiên này không có trình duyệt kết nối và

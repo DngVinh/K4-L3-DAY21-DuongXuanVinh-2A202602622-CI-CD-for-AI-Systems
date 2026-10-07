@@ -1,0 +1,49 @@
+name: DagsHub Tracking Bonus (no deployment)
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  experiments:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
+    env:
+      ARTIFACT_BUCKET: ${{ secrets.ARTIFACT_BUCKET }}
+      MLFLOW_TRACKING_URI: ${{ secrets.MLFLOW_TRACKING_URI }}
+      MLFLOW_TRACKING_USERNAME: ${{ secrets.MLFLOW_TRACKING_USERNAME }}
+      MLFLOW_TRACKING_PASSWORD: ${{ secrets.MLFLOW_TRACKING_PASSWORD }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: pip
+      - name: Require DagsHub configuration without displaying secrets
+        run: |
+          test -n "$MLFLOW_TRACKING_URI"
+          test -n "$MLFLOW_TRACKING_USERNAME"
+          test -n "$MLFLOW_TRACKING_PASSWORD"
+      - run: pip install -r requirements.txt
+      - uses: google-github-actions/auth@v2
+        with:
+          workload_identity_provider: ${{ secrets.GCP_WORKLOAD_IDENTITY_PROVIDER }}
+          service_account: ${{ secrets.GCP_SERVICE_ACCOUNT }}
+      - name: Read training data
+        run: |
+          dvc remote add --local -d labstore "gs://$ARTIFACT_BUCKET/dvc"
+          dvc pull data/train_batch1.csv.dvc data/holdout.csv.dvc
+      - name: Log five real hyperparameter configurations to DagsHub
+        run: python -m src.experiments
+      - uses: actions/upload-artifact@v4
+        with:
+          name: dagshub-experiment-reports
+          path: |
+            outputs/experiments.json
+            outputs/experiments/*/report.json
+            outputs/experiments/*/detail.txt
+    # No cloud_release, SSH, or current-model mutation in this workflow.

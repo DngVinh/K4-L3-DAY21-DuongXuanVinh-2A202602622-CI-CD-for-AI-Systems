@@ -1,0 +1,22 @@
+Source: gs://lday21-income-mlops-dngvinh/artifacts/runs/37574988490-1/detail.txt
+Actions: https://github.com/DngVinh/K4-L3-DAY21-DuongXuanVinh-2A202602622-CI-CD-for-AI-Systems/actions/runs/37574988490
+
+Confusion matrix: rows=actual, columns=predicted; labels=[0, 1]
+[[360  16]
+ [ 41  83]]
+
+               precision    recall  f1-score   support
+
+thu_nhap_thap       0.90      0.96      0.93       376
+ thu_nhap_cao       0.84      0.67      0.74       124
+
+     accuracy                           0.89       500
+    macro avg       0.87      0.81      0.84       500
+ weighted avg       0.88      0.89      0.88       500
+
+Release log excerpts (UTC; retrieved from GitHub jobs API):
+2026-10-07T05:12:53.6417426Z Regression check: candidate F1=0.744395; current F1=0.728111
+2026-10-07T05:12:53.6418078Z PASSED: positive-class F1=0.744395 >= 0.65
+2026-10-07T05:12:53.6418950Z Preserved previous model/report: artifacts/history/37574988490-1/
+2026-10-07T05:12:53.6419681Z Published approved run 17a1602cee7b4d68b900c460fb26d716 for release 37574988490-1
+2026-10-07T05:13:31.4200275Z {"status":"ok"}Health check passed

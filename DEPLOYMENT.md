@@ -129,8 +129,10 @@ Không mở SSH công khai. Bucket bật versioning; role publisher không có d
 Người học đã duyệt thay thế hai object current cho Bước 3; role riêng có điều
 kiện đúng hai tên object và hết hiệu lực lúc 14:00 ngày 07/10/2026 (Asia/Bangkok).
 Giữ version/history, không xóa dữ liệu. Sau hết hạn cần xác nhận mới nếu cấp lại.
-Dataset 44.722 mẫu đã push bằng DVC và commit dữ liệu; GitHub chưa tạo run push.
-Không coi dispatch thủ công là hoàn thành tự động hóa; xem `nop-bai/du-lieu-buoc-3.json`.
+Dataset 44.722 mẫu đã push bằng DVC; người học bật workflows bị chặn trên fork.
+Commit chỉ sửa con trỏ `67447c0` đã tự tạo run push `37574988490`, bốn jobs xanh;
+F1 0,7444, accuracy 0,8860, VM tải run `17a1602cee7b4d68b900c460fb26d716`.
+Generations cũ và history còn nguyên; xem `nop-bai/du-lieu-buoc-3.json`.
 
 Bonus 1: kết nối repo với DagsHub, dùng URI
 `https://dagshub.com/<USER>/<REPO>.mlflow` theo
