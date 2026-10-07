@@ -1,41 +1,45 @@
-from fastapi import FastAPI, HTTPException
-from pydantic import BaseModel
-from google.cloud import storage
-import joblib
+"""Serve the exact decision rule evaluated by the CI quality gate."""
+from __future__ import annotations
+
+from contextlib import asynccontextmanager
+from io import BytesIO
+import math
 import os
 
-app = FastAPI()
+import joblib
+import pandas as pd
+from fastapi import FastAPI, HTTPException, Request
+from pydantic import BaseModel
 
-ARTIFACT_BUCKET = os.environ["ARTIFACT_BUCKET"]
+FEATURE_NAMES = [
+    "age", "workclass", "education_num", "marital_status", "occupation",
+    "relationship", "sex", "capital_gain", "capital_loss", "hours_per_week",
+]
 MODEL_KEY = "artifacts/current/model.joblib"
-MODEL_PATH = os.path.expanduser("~/models/model.joblib")
 
 
 def download_model():
-    """
-    Tai file model.joblib tu cloud storage ve may khi server khoi dong.
-
-    Ham nay duoc goi mot lan khi module duoc import. Su dung
-    GOOGLE_APPLICATION_CREDENTIALS de xac thuc (duoc dat trong systemd service).
-    """
-    # TODO 1: Tao storage.Client()
-    # client = storage.Client()
-
-    # TODO 2: Lay bucket va blob tuong ung
-    # bucket = client.bucket(ARTIFACT_BUCKET)
-    # blob   = bucket.blob(MODEL_KEY)
-
-    # TODO 3: Tai file model xuong may
-    # blob.download_to_filename(MODEL_PATH)
-
-    # TODO 4: In thong bao thanh cong
-    # print("Model da duoc tai xuong tu cloud storage.")
-
-    pass  # xoa dong nay sau khi hoan thanh tat ca TODO ben tren
+    """Load from GCS in memory, or an explicitly supplied local path for tests."""
+    local_path = os.getenv("MODEL_PATH")
+    if local_path:
+        return joblib.load(local_path)
+    bucket_name = os.getenv("ARTIFACT_BUCKET")
+    if not bucket_name:
+        raise RuntimeError("Set ARTIFACT_BUCKET for GCS, or MODEL_PATH for local inference")
+    from google.cloud import storage
+    blob = storage.Client().bucket(bucket_name).blob(MODEL_KEY)
+    loaded = joblib.load(BytesIO(blob.download_as_bytes()))
+    print(f"Loaded model from gs://{bucket_name}/{MODEL_KEY}")
+    return loaded
 
 
-download_model()
-model = joblib.load(MODEL_PATH)
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    app.state.model = download_model()
+    yield
+
+
+app = FastAPI(title="Adult Income API", lifespan=lifespan)
 
 
 class ScoreRequest(BaseModel):
@@ -43,40 +47,38 @@ class ScoreRequest(BaseModel):
 
 
 @app.get("/healthz")
-def healthz():
-    """
-    Endpoint kiem tra suc khoe server.
-    GitHub Actions goi endpoint nay sau khi deploy de xac nhan server dang chay.
-
-    Tra ve: {"status": "ok"}
-    """
-    # TODO 5: Tra ve dict {"status": "ok"}
-    pass  # xoa dong nay sau khi hoan thanh
+def healthz(request: Request):
+    if getattr(request.app.state, "model", None) is None:
+        raise HTTPException(status_code=503, detail="Model not ready")
+    return {"status": "ok"}
 
 
 @app.post("/score")
-def score(req: ScoreRequest):
-    """
-    Endpoint suy luan chinh.
+def score(req: ScoreRequest, request: Request):
+    if len(req.features) != 10:
+        raise HTTPException(status_code=400, detail="Expected 10 features (adult income)")
+    if not all(math.isfinite(value) for value in req.features):
+        raise HTTPException(status_code=400, detail="Features must be finite numbers")
+    model = getattr(request.app.state, "model", None)
+    if model is None:
+        raise HTTPException(status_code=503, detail="Model not ready")
+    frame = pd.DataFrame([req.features], columns=FEATURE_NAMES)
+    threshold = getattr(model, "decision_threshold_", 0.5)
+    # Preserve sklearn's tie handling at the default threshold; custom thresholds
+    # are supported for explicitly selected model artifacts as well.
+    prediction = int(model.predict(frame)[0]) if threshold == 0.5 else int(
+        model.predict_proba(frame)[0, 1] >= threshold)
+    return {"prediction": prediction,
+            "label": "thu_nhap_cao" if prediction else "thu_nhap_thap"}
 
-    Dau vao : JSON {"features": [f1, f2, ..., f10]}
-    Dau ra  : JSON {"prediction": <0|1>, "label": <"thu_nhap_thap"|"thu_nhap_cao">}
 
-    Thu tu 10 dac trung (khop voi thu tu trong FEATURE_NAMES cua test):
-        age, workclass, education_num, marital_status, occupation,
-        relationship, sex, capital_gain, capital_loss, hours_per_week
-    """
-    # TODO 6: Kiem tra so luong dac trung.
-    # Neu len(req.features) != 10, raise HTTPException(status_code=400, ...)
-
-    # TODO 7: Goi model.predict([req.features]) de lay ket qua du doan.
-    # pred = model.predict(...)
-
-    # TODO 8: Tra ve dict chua "prediction" (int) va "label" (string).
-    # Nhan tuong ung: 0 -> "thu_nhap_thap", 1 -> "thu_nhap_cao"
-    # return {"prediction": ..., "label": ...}
-
-    pass  # xoa dong nay sau khi hoan thanh tat ca TODO ben tren
+@app.get("/version")
+def version(request: Request):
+    model = getattr(request.app.state, "model", None)
+    if model is None:
+        raise HTTPException(status_code=503, detail="Model not ready")
+    return {"run_id": getattr(model, "mlflow_run_id_", "unknown"),
+            "decision_threshold": getattr(model, "decision_threshold_", 0.5)}
 
 
 if __name__ == "__main__":

@@ -1,93 +1,86 @@
-import os
 import json
+from pathlib import Path
+
+import joblib
 import numpy as np
 import pandas as pd
-from src.train import train
+import pytest
+from sklearn.metrics import f1_score
+
+from src.train import FEATURE_NAMES, read_dataset, select_threshold, train
+
+PARAMS = {"n_estimators": 10, "learning_rate": 0.1, "max_depth": 2}
 
 
-FEATURE_NAMES = [
-    "age", "workclass", "education_num", "marital_status", "occupation",
-    "relationship", "sex", "capital_gain", "capital_loss", "hours_per_week",
-]
+@pytest.fixture(autouse=True)
+def isolated_tracking(tmp_path, monkeypatch):
+    monkeypatch.chdir(tmp_path)
+    monkeypatch.setenv("MLFLOW_TRACKING_URI", f"sqlite:///{(tmp_path / 'mlflow.db').as_posix()}")
+    monkeypatch.setenv("MLFLOW_ARTIFACT_ROOT", str(tmp_path / "mlartifacts"))
+    monkeypatch.setenv("MLFLOW_EXPERIMENT_NAME", "unit-tests")
 
 
 def _make_temp_data(tmp_path):
-    """
-    Tao dataset nho voi cung schema Adult de su dung trong test.
-
-    pytest cung cap `tmp_path` la mot thu muc tam thoi, tu dong xoa sau khi test ket thuc.
-    Ham nay dung du lieu ngau nhien nen khong can ket noi cloud storage hay tai file CSV thuc.
-    """
     rng = np.random.default_rng(0)
-    n = 200
-
-    # TODO 1: Tao mang X co kich thuoc (n, len(FEATURE_NAMES)) voi gia tri [0, 1)
-    # X = rng.random((n, len(FEATURE_NAMES)))
-
-    # TODO 2: Tao mang y gom n phan tu nguyen ngau nhien trong [0, 2)
-    # Chu y: bai toan nay chi co HAI lop (0 va 1), nen can tren la 2.
-    # y = rng.integers(0, 2, size=n)
-
-    # TODO 3: Xay dung DataFrame, them cot "target"
-    # df = pd.DataFrame(X, columns=FEATURE_NAMES)
-    # df["target"] = y
-
-    # TODO 4: Luu 160 dong dau lam tap huan luyen, 40 dong cuoi lam tap holdout
-    # train_path = str(tmp_path / "train.csv")
-    # eval_path  = str(tmp_path / "holdout.csv")
-    # df.iloc[:160].to_csv(train_path, index=False)
-    # df.iloc[160:].to_csv(eval_path,  index=False)
-
-    # TODO 5: Tra ve (train_path, eval_path)
-    # return train_path, eval_path
-
-    pass  # xoa dong nay sau khi hoan thanh tat ca TODO ben tren
+    frame = pd.DataFrame(rng.random((200, len(FEATURE_NAMES))), columns=FEATURE_NAMES)
+    frame["target"] = rng.integers(0, 2, size=200)
+    train_path, eval_path = tmp_path / "train.csv", tmp_path / "holdout.csv"
+    frame.iloc[:160].to_csv(train_path, index=False)
+    frame.iloc[160:].to_csv(eval_path, index=False)
+    return str(train_path), str(eval_path)
 
 
-def test_train_returns_float(tmp_path):
-    """Kiem tra ham train() tra ve mot so thuc nam trong [0.0, 1.0]."""
-    train_path, eval_path = _make_temp_data(tmp_path)
-
-    # TODO 6: Goi ham train() voi sieu tham so nho
-    # (n_estimators=10, learning_rate=0.1, max_depth=2) va cac duong dan file vua tao
-    # f1 = train({"n_estimators": 10, "learning_rate": 0.1, "max_depth": 2}, ...)
-
-    # TODO 7: Kiem tra ket qua
-    # assert isinstance(f1, float)
-    # assert 0.0 <= f1 <= 1.0
-
-    pass  # xoa dong nay sau khi hoan thanh tat ca TODO ben tren
+@pytest.fixture
+def trained(tmp_path):
+    paths = _make_temp_data(tmp_path)
+    result = train(PARAMS, data_path=paths[0], eval_path=paths[1])
+    return paths, result
 
 
-def test_report_file_created(tmp_path):
-    """Kiem tra file outputs/report.json duoc tao sau khi huan luyen."""
-    train_path, eval_path = _make_temp_data(tmp_path)
-    train(
-        {"n_estimators": 10, "learning_rate": 0.1, "max_depth": 2},
-        data_path=train_path,
-        eval_path=eval_path,
-    )
-
-    # TODO 8: Kiem tra file ton tai va noi dung dung dinh dang
-    # assert os.path.exists("outputs/report.json")
-    # with open("outputs/report.json") as f:
-    #     report = json.load(f)
-    # assert "f1_score" in report
-    # assert "accuracy" in report
-
-    pass  # xoa dong nay sau khi hoan thanh tat ca TODO ben tren
+def test_train_returns_float(trained):
+    assert isinstance(trained[1], float)
+    assert 0 <= trained[1] <= 1
 
 
-def test_model_file_created(tmp_path):
-    """Kiem tra file models/model.joblib duoc tao sau khi huan luyen."""
-    train_path, eval_path = _make_temp_data(tmp_path)
-    train(
-        {"n_estimators": 10, "learning_rate": 0.1, "max_depth": 2},
-        data_path=train_path,
-        eval_path=eval_path,
-    )
+def test_report_file_created(trained):
+    report = json.loads(Path("outputs/report.json").read_text(encoding="utf-8"))
+    assert {"f1_score", "accuracy", "positive_rate", "decision_threshold"} <= report.keys()
+    assert report["f1_score"] == trained[1]
+    assert len(report["threshold_scan"]) == 17
+    assert report["f1_score"] == report["f1_at_default_threshold"]
+    assert report["best_f1_score"] >= report["f1_score"]
+    assert report["decision_threshold"] == 0.5
+    assert report["drift_detected"] is True
+    assert report["train_rows"] == 160 and report["eval_rows"] == 40
+    assert "precision" in Path("outputs/detail.txt").read_text()
 
-    # TODO 9: Kiem tra file model ton tai
-    # assert os.path.exists("models/model.joblib")
 
-    pass  # xoa dong nay sau khi hoan thanh tat ca TODO ben tren
+def test_model_file_created(trained):
+    model = joblib.load("models/model.joblib")
+    report = json.loads(Path("outputs/report.json").read_text())
+    holdout = pd.read_csv(trained[0][1])
+    predictions = model.predict(holdout[FEATURE_NAMES])
+    assert model.decision_threshold_ == report["decision_threshold"]
+    assert f1_score(holdout.target, predictions) == report["f1_score"]
+
+
+def test_threshold_ties_prefer_default():
+    threshold, f1, _ = select_threshold([0, 1], np.array([0.01, 0.99]))
+    assert threshold == 0.5 and f1 == 1
+
+
+@pytest.mark.parametrize("kind", ["missing", "nonfinite", "label", "empty"])
+def test_invalid_dataset_rejected(tmp_path, kind):
+    path, _ = _make_temp_data(tmp_path)
+    frame = pd.read_csv(path)
+    if kind == "missing":
+        frame = frame.drop(columns="age")
+    elif kind == "nonfinite":
+        frame.loc[0, "age"] = float("inf")
+    elif kind == "label":
+        frame.loc[0, "target"] = 2
+    else:
+        frame = frame.iloc[:0]
+    frame.to_csv(path, index=False)
+    with pytest.raises(ValueError):
+        read_dataset(path)

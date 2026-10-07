@@ -1,0 +1,52 @@
+LOCAL VERIFICATION ONLY - not a VM/GitHub Actions screenshot.
+Command: python -m pytest tests/ -v --basetemp .tools/test-run-4
+
+============================= test session starts =============================
+platform win32 -- Python 3.11.17, pytest-8.2.0, pluggy-1.6.0 -- C:\Users\Duong Vinh\K4-L3-DAY21-DuongXuanVinh-2A202602622-CI-CD-for-AI-Systems\.venv\Scripts\python.exe
+cachedir: .pytest_cache
+rootdir: C:\Users\Duong Vinh\K4-L3-DAY21-DuongXuanVinh-2A202602622-CI-CD-for-AI-Systems
+plugins: anyio-4.15.1, hydra-core-1.3.7
+collecting ... collected 34 items
+
+tests/test_append_batch.py::test_append_preserves_original_and_refuses_repeat PASSED [  2%]
+tests/test_append_batch.py::test_wrong_batch_size_does_not_modify_original PASSED [  5%]
+tests/test_cloud_release.py::test_release_never_uploads_a_regression PASSED [  8%]
+tests/test_cloud_release.py::test_first_release_still_requires_quality_gate PASSED [ 11%]
+tests/test_cloud_release.py::test_approved_release_preserves_history_before_upload PASSED [ 14%]
+tests/test_quality_gate.py::test_bad_f1_blocks_release[0] PASSED         [ 17%]
+tests/test_quality_gate.py::test_bad_f1_blocks_release[0.6499] PASSED    [ 20%]
+tests/test_quality_gate.py::test_bad_f1_blocks_release[nan] PASSED       [ 23%]
+tests/test_quality_gate.py::test_bad_f1_blocks_release[inf] PASSED       [ 26%]
+tests/test_quality_gate.py::test_bad_f1_blocks_release[-1] PASSED        [ 29%]
+tests/test_quality_gate.py::test_bad_f1_blocks_release[1.1] PASSED       [ 32%]
+tests/test_quality_gate.py::test_boundary_and_good_f1_pass[0.65] PASSED  [ 35%]
+tests/test_quality_gate.py::test_boundary_and_good_f1_pass[0.8] PASSED   [ 38%]
+tests/test_quality_gate.py::test_boundary_and_good_f1_pass[1.0] PASSED   [ 41%]
+tests/test_quality_gate.py::test_regression_keeps_current_model PASSED   [ 44%]
+tests/test_quality_gate.py::test_equal_f1_is_deployable PASSED           [ 47%]
+tests/test_quality_gate.py::test_changed_holdout_blocks_comparison PASSED [ 50%]
+tests/test_quality_gate.py::test_gate_cli_returns_nonzero_below_threshold PASSED [ 52%]
+tests/test_serve.py::test_health_ready PASSED                            [ 55%]
+tests/test_serve.py::test_scoring_uses_evaluated_threshold PASSED        [ 58%]
+tests/test_serve.py::test_invalid_feature_count[features0] PASSED        [ 61%]
+tests/test_serve.py::test_invalid_feature_count[features1] PASSED        [ 64%]
+tests/test_serve.py::test_invalid_feature_count[features2] PASSED        [ 67%]
+tests/test_serve.py::test_invalid_json_types PASSED                      [ 70%]
+tests/test_serve.py::test_default_threshold_preserves_classifier_ties PASSED [ 73%]
+tests/test_serve.py::test_missing_model_not_ready PASSED                 [ 76%]
+tests/test_train.py::test_train_returns_float PASSED                     [ 79%]
+tests/test_train.py::test_report_file_created PASSED                     [ 82%]
+tests/test_train.py::test_model_file_created PASSED                      [ 85%]
+tests/test_train.py::test_threshold_ties_prefer_default PASSED           [ 88%]
+tests/test_train.py::test_invalid_dataset_rejected[missing] PASSED       [ 91%]
+tests/test_train.py::test_invalid_dataset_rejected[nonfinite] PASSED     [ 94%]
+tests/test_train.py::test_invalid_dataset_rejected[label] PASSED         [ 97%]
+tests/test_train.py::test_invalid_dataset_rejected[empty] PASSED         [100%]
+
+====================== 34 passed, 24 warnings in 16.73s =======================
+
+Actual saved-model API verification using FastAPI TestClient:
+GET /healthz: 200 {'status': 'ok'}
+GET /version: {'run_id': 'ed7de38881644385a150358d17d58b33', 'decision_threshold': 0.5}
+POST /score, low-income sample: {'prediction': 0, 'label': 'thu_nhap_thap'}
+POST /score, high-education sample: {'prediction': 1, 'label': 'thu_nhap_cao'}

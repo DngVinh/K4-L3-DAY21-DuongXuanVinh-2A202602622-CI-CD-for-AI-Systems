@@ -1,0 +1,4 @@
+[core]
+    remote = labstore
+['remote "labstore"']
+    url = gs://lday21-income-mlops-dngvinh/dvc

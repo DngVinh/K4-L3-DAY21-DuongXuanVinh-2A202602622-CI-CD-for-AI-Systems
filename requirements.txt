@@ -9,3 +9,8 @@ uvicorn==0.29.0
 joblib==1.4.2
 google-cloud-storage==2.16.0
 pyyaml==6.0.1
+# MLflow 2.13 imports pkg_resources, removed from newer setuptools.
+setuptools==70.3.0
+numpy==1.26.4
+# SQLAlchemy 2.1 removed an API imported by the lab's MLflow version.
+sqlalchemy==2.0.30

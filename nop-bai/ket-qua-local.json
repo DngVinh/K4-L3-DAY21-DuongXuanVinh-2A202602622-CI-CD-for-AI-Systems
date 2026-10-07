@@ -1,0 +1,690 @@
+{
+  "recorded_date": "2026-10-07",
+  "scope": "Local execution only. GitHub Actions, GCP deployment and DagsHub not yet executed.",
+  "python": "3.11.17",
+  "tests": {
+    "passed": 34,
+    "exit_code": 0,
+    "command": "python -m pytest tests/ -v --basetemp .tools/test-run-4"
+  },
+  "experiments": [
+    {
+      "f1_score": 0.7109004739336493,
+      "accuracy": 0.878,
+      "f1_at_default_threshold": 0.7109004739336493,
+      "best_f1_score": 0.7407407407407407,
+      "best_threshold": 0.3,
+      "accuracy_at_best_threshold": 0.86,
+      "accuracy_at_default_threshold": 0.878,
+      "decision_threshold": 0.5,
+      "positive_rate": 0.24770806314565538,
+      "threshold_scan": [
+        {
+          "threshold": 0.1,
+          "f1_score": 0.6310160427807486
+        },
+        {
+          "threshold": 0.15,
+          "f1_score": 0.6706586826347305
+        },
+        {
+          "threshold": 0.2,
+          "f1_score": 0.7055016181229773
+        },
+        {
+          "threshold": 0.25,
+          "f1_score": 0.7291666666666666
+        },
+        {
+          "threshold": 0.3,
+          "f1_score": 0.7407407407407407
+        },
+        {
+          "threshold": 0.35,
+          "f1_score": 0.7351778656126482
+        },
+        {
+          "threshold": 0.4,
+          "f1_score": 0.7192982456140351
+        },
+        {
+          "threshold": 0.45,
+          "f1_score": 0.7181818181818181
+        },
+        {
+          "threshold": 0.5,
+          "f1_score": 0.7109004739336493
+        },
+        {
+          "threshold": 0.55,
+          "f1_score": 0.6926829268292682
+        },
+        {
+          "threshold": 0.6,
+          "f1_score": 0.6632653061224489
+        },
+        {
+          "threshold": 0.65,
+          "f1_score": 0.6210526315789474
+        },
+        {
+          "threshold": 0.7,
+          "f1_score": 0.5901639344262295
+        },
+        {
+          "threshold": 0.75,
+          "f1_score": 0.5371428571428571
+        },
+        {
+          "threshold": 0.8,
+          "f1_score": 0.4819277108433735
+        },
+        {
+          "threshold": 0.85,
+          "f1_score": 0.4375
+        },
+        {
+          "threshold": 0.9,
+          "f1_score": 0.40764331210191085
+        }
+      ],
+      "drift_detected": false,
+      "train_rows": 22361,
+      "eval_rows": 500,
+      "params": {
+        "n_estimators": 100,
+        "learning_rate": 0.1,
+        "max_depth": 3
+      },
+      "train_sha256": "a66c5663e8f93ab084e25ae943a94f07f42451fe540a4f8a0e4e11b213b2ba4a",
+      "eval_sha256": "c972e9a3fd36f168e5d3565ae579df5c1017b512e5006391f167dc6df5e0a52b",
+      "model_sha256": "504422c72ac078047a53b9fa8707deb3bd2c3fc1bfb009582de63f1546e4400f",
+      "run_id": "747ffa3a08144429bd0a2c86db910eec",
+      "git_commit": "local",
+      "threshold_selection_data": "holdout diagnostic (lab bonus; not independent test F1)",
+      "deployment_decision_rule": "model.predict_default_threshold"
+    },
+    {
+      "f1_score": 0.6051282051282051,
+      "accuracy": 0.846,
+      "f1_at_default_threshold": 0.6051282051282051,
+      "best_f1_score": 0.7083333333333334,
+      "best_threshold": 0.3,
+      "accuracy_at_best_threshold": 0.86,
+      "accuracy_at_default_threshold": 0.846,
+      "decision_threshold": 0.5,
+      "positive_rate": 0.24770806314565538,
+      "threshold_scan": [
+        {
+          "threshold": 0.1,
+          "f1_score": 0.5200845665961945
+        },
+        {
+          "threshold": 0.15,
+          "f1_score": 0.5979381443298969
+        },
+        {
+          "threshold": 0.2,
+          "f1_score": 0.6342857142857142
+        },
+        {
+          "threshold": 0.25,
+          "f1_score": 0.6601941747572816
+        },
+        {
+          "threshold": 0.3,
+          "f1_score": 0.7083333333333334
+        },
+        {
+          "threshold": 0.35,
+          "f1_score": 0.6788990825688074
+        },
+        {
+          "threshold": 0.4,
+          "f1_score": 0.6467661691542289
+        },
+        {
+          "threshold": 0.45,
+          "f1_score": 0.6122448979591837
+        },
+        {
+          "threshold": 0.5,
+          "f1_score": 0.6051282051282051
+        },
+        {
+          "threshold": 0.55,
+          "f1_score": 0.5621621621621622
+        },
+        {
+          "threshold": 0.6,
+          "f1_score": 0.49411764705882355
+        },
+        {
+          "threshold": 0.65,
+          "f1_score": 0.35526315789473684
+        },
+        {
+          "threshold": 0.7,
+          "f1_score": 0.3443708609271523
+        },
+        {
+          "threshold": 0.75,
+          "f1_score": 0.2517482517482518
+        },
+        {
+          "threshold": 0.8,
+          "f1_score": 0.14814814814814814
+        },
+        {
+          "threshold": 0.85,
+          "f1_score": 0.14814814814814814
+        },
+        {
+          "threshold": 0.9,
+          "f1_score": 0
+        }
+      ],
+      "drift_detected": false,
+      "train_rows": 22361,
+      "eval_rows": 500,
+      "params": {
+        "n_estimators": 50,
+        "learning_rate": 0.05,
+        "max_depth": 2
+      },
+      "train_sha256": "a66c5663e8f93ab084e25ae943a94f07f42451fe540a4f8a0e4e11b213b2ba4a",
+      "eval_sha256": "c972e9a3fd36f168e5d3565ae579df5c1017b512e5006391f167dc6df5e0a52b",
+      "model_sha256": "1cc5fb87f92a3a8f3fb38470c6e66a45dd9b51643d1a18c7ff996ed83154d1d9",
+      "run_id": "48c915a213ec4bd38c3fafb08247e08f",
+      "git_commit": "local",
+      "threshold_selection_data": "holdout diagnostic (lab bonus; not independent test F1)",
+      "deployment_decision_rule": "model.predict_default_threshold"
+    },
+    {
+      "f1_score": 0.7149321266968326,
+      "accuracy": 0.874,
+      "f1_at_default_threshold": 0.7149321266968326,
+      "best_f1_score": 0.7368421052631579,
+      "best_threshold": 0.3,
+      "accuracy_at_best_threshold": 0.86,
+      "accuracy_at_default_threshold": 0.874,
+      "decision_threshold": 0.5,
+      "positive_rate": 0.24770806314565538,
+      "threshold_scan": [
+        {
+          "threshold": 0.1,
+          "f1_score": 0.6552706552706553
+        },
+        {
+          "threshold": 0.15,
+          "f1_score": 0.6978193146417445
+        },
+        {
+          "threshold": 0.2,
+          "f1_score": 0.7315436241610739
+        },
+        {
+          "threshold": 0.25,
+          "f1_score": 0.7323943661971831
+        },
+        {
+          "threshold": 0.3,
+          "f1_score": 0.7368421052631579
+        },
+        {
+          "threshold": 0.35,
+          "f1_score": 0.717741935483871
+        },
+        {
+          "threshold": 0.4,
+          "f1_score": 0.7094017094017094
+        },
+        {
+          "threshold": 0.45,
+          "f1_score": 0.7079646017699115
+        },
+        {
+          "threshold": 0.5,
+          "f1_score": 0.7149321266968326
+        },
+        {
+          "threshold": 0.55,
+          "f1_score": 0.6886792452830188
+        },
+        {
+          "threshold": 0.6,
+          "f1_score": 0.6634146341463415
+        },
+        {
+          "threshold": 0.65,
+          "f1_score": 0.6331658291457286
+        },
+        {
+          "threshold": 0.7,
+          "f1_score": 0.6321243523316062
+        },
+        {
+          "threshold": 0.75,
+          "f1_score": 0.6276595744680851
+        },
+        {
+          "threshold": 0.8,
+          "f1_score": 0.5632183908045977
+        },
+        {
+          "threshold": 0.85,
+          "f1_score": 0.5238095238095238
+        },
+        {
+          "threshold": 0.9,
+          "f1_score": 0.4691358024691358
+        }
+      ],
+      "drift_detected": false,
+      "train_rows": 22361,
+      "eval_rows": 500,
+      "params": {
+        "n_estimators": 200,
+        "learning_rate": 0.1,
+        "max_depth": 5
+      },
+      "train_sha256": "a66c5663e8f93ab084e25ae943a94f07f42451fe540a4f8a0e4e11b213b2ba4a",
+      "eval_sha256": "c972e9a3fd36f168e5d3565ae579df5c1017b512e5006391f167dc6df5e0a52b",
+      "model_sha256": "c58079123a511fd4faa580d58dbd10837f54d8655829284f692ca59e4c06528b",
+      "run_id": "9057618eab694395a685d0b0b03996e8",
+      "git_commit": "local",
+      "threshold_selection_data": "holdout diagnostic (lab bonus; not independent test F1)",
+      "deployment_decision_rule": "model.predict_default_threshold"
+    },
+    {
+      "f1_score": 0.728110599078341,
+      "accuracy": 0.882,
+      "f1_at_default_threshold": 0.728110599078341,
+      "best_f1_score": 0.7510548523206751,
+      "best_threshold": 0.4,
+      "accuracy_at_best_threshold": 0.882,
+      "accuracy_at_default_threshold": 0.882,
+      "decision_threshold": 0.5,
+      "positive_rate": 0.24770806314565538,
+      "threshold_scan": [
+        {
+          "threshold": 0.1,
+          "f1_score": 0.6446280991735537
+        },
+        {
+          "threshold": 0.15,
+          "f1_score": 0.6892307692307692
+        },
+        {
+          "threshold": 0.2,
+          "f1_score": 0.7124183006535948
+        },
+        {
+          "threshold": 0.25,
+          "f1_score": 0.7298245614035088
+        },
+        {
+          "threshold": 0.3,
+          "f1_score": 0.746268656716418
+        },
+        {
+          "threshold": 0.35,
+          "f1_score": 0.7389558232931727
+        },
+        {
+          "threshold": 0.4,
+          "f1_score": 0.7510548523206751
+        },
+        {
+          "threshold": 0.45,
+          "f1_score": 0.7321428571428571
+        },
+        {
+          "threshold": 0.5,
+          "f1_score": 0.728110599078341
+        },
+        {
+          "threshold": 0.55,
+          "f1_score": 0.6985645933014354
+        },
+        {
+          "threshold": 0.6,
+          "f1_score": 0.6732673267326733
+        },
+        {
+          "threshold": 0.65,
+          "f1_score": 0.649746192893401
+        },
+        {
+          "threshold": 0.7,
+          "f1_score": 0.6391752577319587
+        },
+        {
+          "threshold": 0.75,
+          "f1_score": 0.5777777777777777
+        },
+        {
+          "threshold": 0.8,
+          "f1_score": 0.5146198830409356
+        },
+        {
+          "threshold": 0.85,
+          "f1_score": 0.4785276073619632
+        },
+        {
+          "threshold": 0.9,
+          "f1_score": 0.42038216560509556
+        }
+      ],
+      "drift_detected": false,
+      "train_rows": 22361,
+      "eval_rows": 500,
+      "params": {
+        "n_estimators": 200,
+        "learning_rate": 0.1,
+        "max_depth": 3
+      },
+      "train_sha256": "a66c5663e8f93ab084e25ae943a94f07f42451fe540a4f8a0e4e11b213b2ba4a",
+      "eval_sha256": "c972e9a3fd36f168e5d3565ae579df5c1017b512e5006391f167dc6df5e0a52b",
+      "model_sha256": "0a453467698cee3af143d4798ea304f14627619b2a2ef6334f038237545c24db",
+      "run_id": "eae50a4901bc4871928817e0033443c6",
+      "git_commit": "local",
+      "threshold_selection_data": "holdout diagnostic (lab bonus; not independent test F1)",
+      "deployment_decision_rule": "model.predict_default_threshold"
+    },
+    {
+      "f1_score": 0.7014218009478673,
+      "accuracy": 0.874,
+      "f1_at_default_threshold": 0.7014218009478673,
+      "best_f1_score": 0.7327586206896551,
+      "best_threshold": 0.4,
+      "accuracy_at_best_threshold": 0.876,
+      "accuracy_at_default_threshold": 0.874,
+      "decision_threshold": 0.5,
+      "positive_rate": 0.24770806314565538,
+      "threshold_scan": [
+        {
+          "threshold": 0.1,
+          "f1_score": 0.6327077747989276
+        },
+        {
+          "threshold": 0.15,
+          "f1_score": 0.6666666666666666
+        },
+        {
+          "threshold": 0.2,
+          "f1_score": 0.7009646302250804
+        },
+        {
+          "threshold": 0.25,
+          "f1_score": 0.726643598615917
+        },
+        {
+          "threshold": 0.3,
+          "f1_score": 0.7306273062730627
+        },
+        {
+          "threshold": 0.35,
+          "f1_score": 0.7222222222222222
+        },
+        {
+          "threshold": 0.4,
+          "f1_score": 0.7327586206896551
+        },
+        {
+          "threshold": 0.45,
+          "f1_score": 0.7129629629629629
+        },
+        {
+          "threshold": 0.5,
+          "f1_score": 0.7014218009478673
+        },
+        {
+          "threshold": 0.55,
+          "f1_score": 0.6926829268292682
+        },
+        {
+          "threshold": 0.6,
+          "f1_score": 0.6530612244897959
+        },
+        {
+          "threshold": 0.65,
+          "f1_score": 0.631578947368421
+        },
+        {
+          "threshold": 0.7,
+          "f1_score": 0.574585635359116
+        },
+        {
+          "threshold": 0.75,
+          "f1_score": 0.5287356321839081
+        },
+        {
+          "threshold": 0.8,
+          "f1_score": 0.4819277108433735
+        },
+        {
+          "threshold": 0.85,
+          "f1_score": 0.4375
+        },
+        {
+          "threshold": 0.9,
+          "f1_score": 0.40764331210191085
+        }
+      ],
+      "drift_detected": false,
+      "train_rows": 22361,
+      "eval_rows": 500,
+      "params": {
+        "n_estimators": 200,
+        "learning_rate": 0.05,
+        "max_depth": 3
+      },
+      "train_sha256": "a66c5663e8f93ab084e25ae943a94f07f42451fe540a4f8a0e4e11b213b2ba4a",
+      "eval_sha256": "c972e9a3fd36f168e5d3565ae579df5c1017b512e5006391f167dc6df5e0a52b",
+      "model_sha256": "a5ce0abd2a6675b2ae6a316a77e9a96b9544285ff72b46d9cfcbbce92d61fee2",
+      "run_id": "b852128f619343029bcbcd92e5cc02b3",
+      "git_commit": "local",
+      "threshold_selection_data": "holdout diagnostic (lab bonus; not independent test F1)",
+      "deployment_decision_rule": "model.predict_default_threshold"
+    }
+  ],
+  "best_params": {
+    "n_estimators": 200,
+    "learning_rate": 0.1,
+    "max_depth": 3
+  },
+  "selected_by": "positive-class F1 of model.predict() (fixed default threshold)",
+  "batch1": {
+    "f1_score": 0.728110599078341,
+    "accuracy": 0.882,
+    "f1_at_default_threshold": 0.728110599078341,
+    "best_f1_score": 0.7510548523206751,
+    "best_threshold": 0.4,
+    "accuracy_at_best_threshold": 0.882,
+    "accuracy_at_default_threshold": 0.882,
+    "decision_threshold": 0.5,
+    "positive_rate": 0.24770806314565538,
+    "threshold_scan": [
+      {
+        "threshold": 0.1,
+        "f1_score": 0.6446280991735537
+      },
+      {
+        "threshold": 0.15,
+        "f1_score": 0.6892307692307692
+      },
+      {
+        "threshold": 0.2,
+        "f1_score": 0.7124183006535948
+      },
+      {
+        "threshold": 0.25,
+        "f1_score": 0.7298245614035088
+      },
+      {
+        "threshold": 0.3,
+        "f1_score": 0.746268656716418
+      },
+      {
+        "threshold": 0.35,
+        "f1_score": 0.7389558232931727
+      },
+      {
+        "threshold": 0.4,
+        "f1_score": 0.7510548523206751
+      },
+      {
+        "threshold": 0.45,
+        "f1_score": 0.7321428571428571
+      },
+      {
+        "threshold": 0.5,
+        "f1_score": 0.728110599078341
+      },
+      {
+        "threshold": 0.55,
+        "f1_score": 0.6985645933014354
+      },
+      {
+        "threshold": 0.6,
+        "f1_score": 0.6732673267326733
+      },
+      {
+        "threshold": 0.65,
+        "f1_score": 0.649746192893401
+      },
+      {
+        "threshold": 0.7,
+        "f1_score": 0.6391752577319587
+      },
+      {
+        "threshold": 0.75,
+        "f1_score": 0.5777777777777777
+      },
+      {
+        "threshold": 0.8,
+        "f1_score": 0.5146198830409356
+      },
+      {
+        "threshold": 0.85,
+        "f1_score": 0.4785276073619632
+      },
+      {
+        "threshold": 0.9,
+        "f1_score": 0.42038216560509556
+      }
+    ],
+    "drift_detected": false,
+    "train_rows": 22361,
+    "eval_rows": 500,
+    "params": {
+      "n_estimators": 200,
+      "learning_rate": 0.1,
+      "max_depth": 3
+    },
+    "train_sha256": "a66c5663e8f93ab084e25ae943a94f07f42451fe540a4f8a0e4e11b213b2ba4a",
+    "eval_sha256": "c972e9a3fd36f168e5d3565ae579df5c1017b512e5006391f167dc6df5e0a52b",
+    "model_sha256": "e629034923d6ab20016f5ebbe7ac80551bcff2d54168b3320d3728bcae294c91",
+    "run_id": "ed7de38881644385a150358d17d58b33",
+    "git_commit": "local",
+    "threshold_selection_data": "holdout diagnostic (lab bonus; not independent test F1)",
+    "deployment_decision_rule": "model.predict_default_threshold"
+  },
+  "batch1_plus_batch2_local": {
+    "f1_score": 0.7443946188340808,
+    "accuracy": 0.886,
+    "f1_at_default_threshold": 0.7443946188340808,
+    "best_f1_score": 0.7443946188340808,
+    "best_threshold": 0.5,
+    "accuracy_at_best_threshold": 0.886,
+    "accuracy_at_default_threshold": 0.886,
+    "decision_threshold": 0.5,
+    "positive_rate": 0.24784222530298286,
+    "threshold_scan": [
+      {
+        "threshold": 0.1,
+        "f1_score": 0.6592797783933518
+      },
+      {
+        "threshold": 0.15,
+        "f1_score": 0.6892307692307692
+      },
+      {
+        "threshold": 0.2,
+        "f1_score": 0.6970684039087948
+      },
+      {
+        "threshold": 0.25,
+        "f1_score": 0.7253521126760564
+      },
+      {
+        "threshold": 0.3,
+        "f1_score": 0.7306273062730627
+      },
+      {
+        "threshold": 0.35,
+        "f1_score": 0.7380952380952381
+      },
+      {
+        "threshold": 0.4,
+        "f1_score": 0.7398373983739838
+      },
+      {
+        "threshold": 0.45,
+        "f1_score": 0.7435897435897436
+      },
+      {
+        "threshold": 0.5,
+        "f1_score": 0.7443946188340808
+      },
+      {
+        "threshold": 0.55,
+        "f1_score": 0.7014218009478673
+      },
+      {
+        "threshold": 0.6,
+        "f1_score": 0.6862745098039216
+      },
+      {
+        "threshold": 0.65,
+        "f1_score": 0.6632653061224489
+      },
+      {
+        "threshold": 0.7,
+        "f1_score": 0.6276595744680851
+      },
+      {
+        "threshold": 0.75,
+        "f1_score": 0.5423728813559322
+      },
+      {
+        "threshold": 0.8,
+        "f1_score": 0.49101796407185627
+      },
+      {
+        "threshold": 0.85,
+        "f1_score": 0.4662576687116564
+      },
+      {
+        "threshold": 0.9,
+        "f1_score": 0.40764331210191085
+      }
+    ],
+    "drift_detected": false,
+    "train_rows": 44722,
+    "eval_rows": 500,
+    "params": {
+      "n_estimators": 200,
+      "learning_rate": 0.1,
+      "max_depth": 3
+    },
+    "train_sha256": "d5c5f896924e3927dafb97e967ca60d94c07bbf276111d8e3ead41cb58914da9",
+    "eval_sha256": "c972e9a3fd36f168e5d3565ae579df5c1017b512e5006391f167dc6df5e0a52b",
+    "model_sha256": "3e02500791896b18331f3fc8b7631fccc1c811ce32d3a0d4ce0581a490a9b23f",
+    "run_id": "1ba12c200b5b43db8453bc165340e140",
+    "git_commit": "local",
+    "threshold_selection_data": "holdout diagnostic (lab bonus; not independent test F1)",
+    "deployment_decision_rule": "model.predict_default_threshold"
+  }
+}

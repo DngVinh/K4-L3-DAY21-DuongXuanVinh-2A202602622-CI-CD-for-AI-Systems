@@ -1,5 +1,10 @@
 # Lab MLOps Thực Hành: Từ Thực Nghiệm Cục Bộ Đến Triển Khai Liên Tục
 
+Phần triển khai trong repo đã có huấn luyện, API, unit tests, workflow bốn jobs
+và hỗ trợ năm bonus. Xem [DEPLOYMENT.md](DEPLOYMENT.md) để cấu hình GCP,
+[báo cáo](nop-bai/bao-cao.md) và [tiến độ thực tế](nop-bai/tien-do.md).
+Kết quả cục bộ không thay thế bằng chứng GitHub Actions và VM.
+
 Course: AIInAction - VinUni
 Buổi: Day 21 - CI/CD cho AI Systems
 Khoá: K4

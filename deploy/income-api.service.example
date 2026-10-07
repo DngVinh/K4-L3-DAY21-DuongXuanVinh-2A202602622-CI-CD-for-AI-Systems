@@ -1,0 +1,19 @@
+[Unit]
+Description=Adult Income FastAPI inference service
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=<USER>
+WorkingDirectory=/home/<USER>/income-lab
+Environment="ARTIFACT_BUCKET=<BUCKET>"
+# Omit this line when using the VM service account / ADC.
+Environment="GOOGLE_APPLICATION_CREDENTIALS=/home/<USER>/income-lab/sa-key.json"
+ExecStart=/home/<USER>/income-lab/.venv/bin/python -m src.serve
+Restart=on-failure
+RestartSec=5
+NoNewPrivileges=true
+
+[Install]
+WantedBy=multi-user.target

@@ -11,3 +11,15 @@ sa-key.json
 __pycache__/
 *.pyc
 .DS_Store
+.tools/
+.pytest_cache/
+mlruns/
+mlflow.db-shm
+mlflow.db-wal
+.dvc/config.local
+.dvc/cache/
+.dvc/tmp/
+*.pem
+data/local_combined.csv
+data/train_batch1.before-batch2.csv
+gha-creds-*.json

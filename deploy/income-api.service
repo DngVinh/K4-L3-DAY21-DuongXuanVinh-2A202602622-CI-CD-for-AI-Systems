@@ -1,0 +1,21 @@
+[Unit]
+Description=Income lab inference API
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=income-api
+WorkingDirectory=/opt/income-lab
+Environment=ARTIFACT_BUCKET=lday21-income-mlops-dngvinh
+Environment=PYTHONDONTWRITEBYTECODE=1
+ExecStart=/opt/income-lab/.venv/bin/python -m src.serve
+Restart=on-failure
+RestartSec=10
+NoNewPrivileges=true
+ProtectSystem=strict
+ProtectHome=true
+PrivateTmp=true
+
+[Install]
+WantedBy=multi-user.target
