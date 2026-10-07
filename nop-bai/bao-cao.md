@@ -20,7 +20,7 @@
 
 **Bộ siêu tham số đã chọn:** `n_estimators=200`, `learning_rate=0.1`, `max_depth=3`.
 
-**Lý do:** Lần 4 có F1 và accuracy cao nhất. Giảm learning rate cần thêm cây; 200 cây với learning rate 0,05 vẫn kém 0,1. Depth 5 không cải thiện. MLflow dùng random_state=42; F1 mặc định 0,5 thống nhất với API và gate.
+**Lý do:** Bộ 200/0,1/3 đạt F1 cao nhất; 200 cây ở learning rate 0,05 vẫn kém. Depth 5 không cải thiện. Giữ random_state=42; F1 mặc định 0,5 thống nhất API/gate.
 
 ## 2. Vì Sao Ngưỡng Chất Lượng Đặt Trên F1 Chứ Không Phải Accuracy
 
@@ -41,7 +41,7 @@ Lớp thu nhập cao chiếm 24,8%. Luôn đoán thu nhập thấp đạt accura
 | Bước 2 Actions/VM, 22.361 mẫu | 0.7281 | 0.8820 |
 | Bước 3 mô phỏng cục bộ, 44.722 mẫu | 0.7444 | 0.8860 |
 
-**Nhận xét:** Dự kiến F1 tăng 0,0163, accuracy tăng 0,0040 từ so sánh local; cùng phân phối nên cải thiện nhỏ. Bước 2 đã có bốn jobs xanh, API VM hoạt động. Bước 3 chưa chạy Actions nên chưa khẳng định hoàn tất.
+**Nhận xét:** So sánh local: F1 tăng 0,0163, accuracy tăng 0,0040; cùng phân phối nên cải thiện nhỏ. Bước 2 đã có bốn jobs xanh và API VM hoạt động. Bước 3 chưa chạy Actions.
 
 ## 5. Phần Bonus Đã Thực Hiện (nếu có)
 
