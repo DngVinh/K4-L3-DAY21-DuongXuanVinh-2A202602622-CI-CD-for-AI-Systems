@@ -41,7 +41,7 @@ Lớp thu nhập cao chiếm 24,8%. Luôn đoán thu nhập thấp đạt accura
 | Bước 2 Actions/VM, 22.361 mẫu | 0.7281 | 0.8820 |
 | Bước 3 mô phỏng cục bộ, 44.722 mẫu | 0.7444 | 0.8860 |
 
-**Nhận xét:** So sánh local: F1 tăng 0,0163, accuracy tăng 0,0040; cùng phân phối nên cải thiện nhỏ. Bước 2 đã có bốn jobs xanh và API VM hoạt động. Bước 3 chưa chạy Actions.
+**Nhận xét:** Local: F1 tăng 0,0163, accuracy tăng 0,0040; cùng phân phối nên cải thiện nhỏ. Bước 2 có bốn jobs xanh và API VM hoạt động. Dữ liệu Bước 3 đã push nhưng chưa tạo run tự động.
 
 ## 5. Phần Bonus Đã Thực Hiện (nếu có)
 

@@ -126,8 +126,11 @@ Workflow thực tế dùng WIF với token ngắn hạn, giới hạn đúng rep
 không dùng STORAGE_CREDENTIALS. Release mở tunnel IAP tới đúng VM/cổng 22,
 SSH bằng user `income-ci`, pin host key; sudo chỉ cho restart `income-api`.
 Không mở SSH công khai. Bucket bật versioning; role publisher không có delete.
-Việc thay thế hai object current ở lần phát hành tiếp theo cần duyệt riêng theo
-chính sách bảo vệ dữ liệu, giữ version/history và cấp quyền đúng hai object.
+Người học đã duyệt thay thế hai object current cho Bước 3; role riêng có điều
+kiện đúng hai tên object và hết hiệu lực lúc 14:00 ngày 07/10/2026 (Asia/Bangkok).
+Giữ version/history, không xóa dữ liệu. Sau hết hạn cần xác nhận mới nếu cấp lại.
+Dataset 44.722 mẫu đã push bằng DVC và commit dữ liệu; GitHub chưa tạo run push.
+Không coi dispatch thủ công là hoàn thành tự động hóa; xem `nop-bai/du-lieu-buoc-3.json`.
 
 Bonus 1: kết nối repo với DagsHub, dùng URI
 `https://dagshub.com/<USER>/<REPO>.mlflow` theo

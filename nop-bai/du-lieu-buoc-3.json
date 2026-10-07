@@ -1,0 +1,28 @@
+{
+  "date": "2026-10-07",
+  "status": "data_prepared_and_pushed_but_push_workflow_not_created",
+  "destructive_action_authorization": "Explicit user confirmation received for the displayed step 3 targets",
+  "training_rows_before": 22361,
+  "training_rows_after": 44722,
+  "original_snapshot": "data/train_batch1.before-batch2.csv",
+  "original_md5": "6097c9bf1219a011f64a7a594a7b617d",
+  "new_md5": "a8dce66c4576ca2cb7da42a584fe31b3",
+  "new_size": 1170799,
+  "dvc_push": "success",
+  "data_commit": "d35461e206c50e5c73e3f01c02c95baad2b98d34",
+  "data_metadata_commit": "14f46d5f21f84c41592092752ba460051241dae9",
+  "changed_file_in_both_commits": "data/train_batch1.csv.dvc",
+  "push_actions_run": null,
+  "manual_dispatch_used_for_step_3": false,
+  "deployed_model_unchanged": true,
+  "current_run_id": "6c4bab25c3594612849243a6e97b47d8",
+  "current_model_generation_before_step_3": "1791348964928554",
+  "current_report_generation_before_step_3": "1791348965116463",
+  "temporary_replace_permission": {
+    "principal": "income-ci@lday21-income-mlops.iam.gserviceaccount.com",
+    "role": "projects/lday21-income-mlops/roles/incomeCurrentReplace",
+    "targets": ["artifacts/current/model.joblib", "artifacts/current/report.json"],
+    "expires_utc": "2026-10-07T07:00:00Z",
+    "bucket_versioning": true
+  }
+}
